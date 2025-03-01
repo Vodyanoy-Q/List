@@ -2,11 +2,12 @@
 #define _ASSERT_H_
 
 
-#define MY_ASSERT(addres, error) if(addres == NULL)                                                      \
-                                 {                                                                       \
-                                     printf(RED "ERROR: %d\n" RESET_COLOR, error);                       \
-                                     return error;                                                       \
-                                 }                                                                       \
+#define MY_ASSERT(addres, error) if(addres == NULL)                                                              \
+                                 {                                                                               \
+                                     printf(RED "ERROR: %d\n" RESET_COLOR, error);                               \
+                                     printf(RED "%s:%d in func %s\n" RESET_COLOR, __FILE__, __LINE__, __func__); \
+                                     return error;                                                               \
+                                 }                                                                               \
 
 #define _FOPEN(addres, name, arg) addres = fopen(name, arg);                                                        \
                                                                                                                     \
@@ -19,7 +20,6 @@
                                       printf(YELLOW "LINE: %d\n" RESET_COLOR, __LINE__);                            \
                                       printf(YELLOW "FUNC: %s\n" RESET_COLOR, __func__);                            \
                                       printf(YELLOW "FILE: %s\n" RESET_COLOR, __FILE__);                            \
-                                      SPU_Dtor(spu);                                                                \
                                                                                                                     \
                                       return OPEN_FILE_ERROR;                                                       \
                                   }                                                                                 \
@@ -31,7 +31,6 @@
                             printf(YELLOW "LINE: %d\n" RESET_COLOR, __LINE__);                             \
                             printf(YELLOW "FUNC: %s\n" RESET_COLOR, __func__);                             \
                             printf(YELLOW "FILE: %s\n" RESET_COLOR, __FILE__);                             \
-                            SPU_Dtor(spu);                                                                 \
                                                                                                            \
                             return CLOSE_FILE_ERROR;                                                       \
                         }                                                                                  \
