@@ -1,5 +1,5 @@
-echo Start compilling
-g++ -Wall -c List.cpp
-g++ -Wall -o list.exe List.o
+echo "Start compilling ================================================================================================="
+g++ -Wall -c List.cpp ListMain.cpp
+g++ -Wall -o list.exe List.o ListMain.o
 
-echo End compilling
+echo "End compilling   ================================================================================================="

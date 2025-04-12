@@ -1,0 +1,20 @@
+digraph {
+    node0x56006e7322c0 [shape = "Mrecord", label="{ptr = 0x56006e7322c0 | value = 200 |next = 0x56006e7322e0}", style="filled", fillcolor="#BEDAFF"]
+    node0x56006e7322e0 [shape = "Mrecord", label="{ptr = 0x56006e7322e0 | value = 300 |next = 0x56006e732300}", style="filled", fillcolor="#BEDAFF"]
+    node0x56006e732300 [shape = "Mrecord", label="{ptr = 0x56006e732300 | value = 400 |next = 0x56006e732320}", style="filled", fillcolor="#BEDAFF"]
+    node0x56006e732320 [shape = "Mrecord", label="{ptr = 0x56006e732320 | value = 500 |next = 0x56006e732340}", style="filled", fillcolor="#BEDAFF"]
+    node0x56006e732340 [shape = "Mrecord", label="{ptr = 0x56006e732340 | value = 600 |next = 0x56006e732360}", style="filled", fillcolor="#BEDAFF"]
+    node0x56006e732360 [shape = "Mrecord", label="{ptr = 0x56006e732360 | value = 700 |next = 0x56006e7323a0}", style="filled", fillcolor="#BEDAFF"]
+    node0x56006e7323a0 [shape = "Mrecord", label="{ptr = 0x56006e7323a0 | value = 900 |next = 0x56006e7323c0}", style="filled", fillcolor="#BEDAFF"]
+    node0x56006e7323c0 [shape = "Mrecord", label="{ptr = 0x56006e7323c0 | value = 1000 |next = 0x56006e7323e0}", style="filled", fillcolor="#BEDAFF"]
+    node0x56006e7323e0 [shape = "Mrecord", label="{ptr = 0x56006e7323e0 | value = 1100 |next = (nil)}", style="filled", fillcolor="#BEDAFF"]
+
+    node0x56006e7322c0 -> node0x56006e7322e0
+    node0x56006e7322e0 -> node0x56006e732300
+    node0x56006e732300 -> node0x56006e732320
+    node0x56006e732320 -> node0x56006e732340
+    node0x56006e732340 -> node0x56006e732360
+    node0x56006e732360 -> node0x56006e7323a0
+    node0x56006e7323a0 -> node0x56006e7323c0
+    node0x56006e7323c0 -> node0x56006e7323e0
+}

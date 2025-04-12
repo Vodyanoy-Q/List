@@ -1,55 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "List.h"
 #include "MyAssert.h"
 #include "Errors.h"
 #include "colors.h"
 
-typedef double NodeType;
-
-struct Node
-{
-    Node* next = NULL;
-    NodeType value = 0;
-};
-
-Node * AddNode(Node** current, NodeType value);
-int ListDump(Node* node, const char* message);
-int ListGraph(Node* node);
-int NodeFind(Node* head, Node** return_ptr, NodeType value);
-int ListDtor(Node** head);
-int DeleteNode(Node** head, NodeType value);
-
-int main()
-{
-    Node * cur = NULL;
-    AddNode(&cur, 100);
-
-    ListDump(cur, "12312");
-
-    Node * head = cur;
-
-    for (int i = 0; i < 10; i++)
-    {
-        AddNode(&cur, (i + 2) * 100);
-        cur = cur->next;
-    }
-    ListDump(head, "For cycle");
-
-
-    Node * ret = 0;
-    NodeFind(head, &ret, 700);
-    printf("Node with value 700 ptr = %p\n", ret);
-
-    DeleteNode(&head, 100);
-    DeleteNode(&head, 800);
-    ListGraph(head);
-
-    ListDtor(&head);
-
-    return 0;
-}
-
-Node * AddNode(Node** current, NodeType value)
+Node* AddNode(Node** current, NodeType value)
 {
     Node * new_node = (Node*)calloc(1, sizeof(Node));
     if (new_node == NULL)
@@ -74,10 +30,10 @@ Node * AddNode(Node** current, NodeType value)
     return new_node;
 }
 
-int ListDump(Node* node, const char* message)
+ERROR ListDump(Node* node, const char* message)
 {
-    MY_ASSERT(node, ADDRESS_ERROR)
-    MY_ASSERT(message, ADDRESS_ERROR)
+    MY_ASSERT_RET(node, ADDRESS_ERROR)
+    MY_ASSERT_RET(message, ADDRESS_ERROR)
 
     Node * cur = node;
 
@@ -96,17 +52,15 @@ int ListDump(Node* node, const char* message)
     return NO_ERROR;
 }
 
-int ListGraph(Node* node)
+ERROR ListGraph(Node* node)
 {
-    MY_ASSERT(node, ADDRESS_ERROR);
-
-    ERROR error = NO_ERROR;
+    MY_ASSERT_RET(node, ADDRESS_ERROR);
 
     FILE * file = NULL;
 
     Node * cur = node;
 
-    _FOPEN(file, "list.dot", "w");
+    MY_FOPEN_RET(file, "list.dot", "w");
 
     fprintf(file, "digraph {\n");
 
@@ -128,17 +82,40 @@ int ListGraph(Node* node)
 
     fprintf(file, "}\n");
 
-    _FCLOSE(file);
+    MY_FCLOSE_RET(file);
 
     system("dot list.dot -T png -o list.png");
 
     return NO_ERROR;
 }
 
-int NodeFind(Node* head, Node** return_ptr, NodeType value)
+ERROR FindLoop(Node* head, bool* ret_val)
 {
-    MY_ASSERT(head, ADDRESS_ERROR);
-    MY_ASSERT(return_ptr, ADDRESS_ERROR);
+    MY_ASSERT_RET(head,    ADDRESS_ERROR);
+    MY_ASSERT_RET(ret_val, ADDRESS_ERROR);
+
+    Node* cur1 = head;
+    Node* cur2 = head->next;
+
+    while (cur2 != NULL)
+    {
+        if (cur1 == cur2)
+        {
+            *ret_val = true;
+            break;
+        }
+        cur1 = cur1->next;
+        cur2 = cur2->next;
+        if (cur2->next != NULL) cur2 = cur2->next;
+    }
+
+    return NO_ERROR;
+}
+
+ERROR NodeFind(Node* head, Node** return_ptr, NodeType value)
+{
+    MY_ASSERT_RET(head, ADDRESS_ERROR);
+    MY_ASSERT_RET(return_ptr, ADDRESS_ERROR);
 
     Node * cur = head;
 
@@ -152,19 +129,13 @@ int NodeFind(Node* head, Node** return_ptr, NodeType value)
         cur = cur->next;
     }
 
-    if (cur == NULL)
-    {
-        *return_ptr = NULL;
-        return NO_NODE_IN_LIST;
-    }
-
-    return NO_ERROR;
+    return NO_NODE_IN_LIST;
 }
 
-int ListDtor(Node** head)
+ERROR ListDtor(Node** head)
 {
-    MY_ASSERT(head, ADDRESS_ERROR);
-    MY_ASSERT(*head, ADDRESS_ERROR);
+    MY_ASSERT_RET(head, ADDRESS_ERROR);
+    MY_ASSERT_RET(*head, ADDRESS_ERROR);
 
     Node * cur = *head;
     Node * prev = *head;
@@ -184,10 +155,10 @@ int ListDtor(Node** head)
     return NO_ERROR;
 }
 
-int DeleteNode(Node** head, NodeType value)
+ERROR DeleteNode(Node** head, NodeType value)
 {
-    MY_ASSERT(head, ADDRESS_ERROR);
-    MY_ASSERT(*head, ADDRESS_ERROR);
+    MY_ASSERT_RET(head, ADDRESS_ERROR);
+    MY_ASSERT_RET(*head, ADDRESS_ERROR);
 
     Node * node = NULL;
 
@@ -220,10 +191,26 @@ int DeleteNode(Node** head, NodeType value)
         cur = cur->next;
     }
 
-    if (cur->next == NULL)
+    return DELETE_NODE_ERROR;
+}
+
+ERROR ListReverse(Node** head)
+{
+    MY_ASSERT_RET(head, ADDRESS_ERROR);
+
+    Node* cur  = *head;
+    Node* next = NULL;
+    Node* prev = NULL;
+
+    while (cur != NULL)
     {
-        return DELETE_NODE_ERROR;
+        next = cur->next;
+        cur->next = prev;
+        prev = cur;
+        cur = next;
     }
+
+    *head = prev;
 
     return NO_ERROR;
 }
